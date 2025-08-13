@@ -226,17 +226,23 @@ export class MemStorage implements IStorage {
 
   // Initialize with sample data
   private initializeData() {
-    // Sample servers
+    const now = new Date();
+    const day = now.getDay();
+    const diff = (day >= 4 ? day - 4 : 7 - (4 - day)) || 7;
+    const targetDate = new Date(now);
+    targetDate.setDate(now.getDate() - diff);
+    targetDate.setHours(0, 0, 0, 0);
+
     const vanillaServer: InsertServer = {
-      name: "RustBunnies Vanilla",
-      description: "Pure Rust experience with minimal plugins, weekly wipes, and active admins.",
+      name: "[US] RustBunnies | 2X | Weekly/Thursdays",
+      description: "Pure Rust experience with a few Qol plugins, weekly wipes, and active admins.",
       ipAddress: "play.rustbunnies.com",
       port: 28015,
       status: "online",
-      currentPlayers: 128,
+      currentPlayers: 2,
       maxPlayers: 150,
-      mapSize: 4500,
-      lastWipe: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
+      mapSize: 4000,
+      lastWipe: targetDate,
       imageUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&h=400"
     };
     
