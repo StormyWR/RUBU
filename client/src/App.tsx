@@ -14,49 +14,54 @@ import CookieConsent from "@/components/layout/CookieConsent";
 import { useState, useEffect } from "react";
 
 function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/servers" component={Servers} />
-      <Route path="/wipe" component={Wipe} />
-      <Route path="/store" component={Store} />
-      <Route path="/link-account" component={LinkAccount} />
-      <Route component={NotFound} />
-    </Switch>
-  );
+    return (
+        <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/servers" component={Servers} />
+            <Route path="/wipe" component={Wipe} />
+            <Route path="/store" component={Store} />
+            <Route path="/link-account" component={LinkAccount} />
+            <Route component={NotFound} />
+        </Switch>
+    );
 }
 
 function App() {
-  const [cookieChoice, setCookieChoice] = useState<string | null>(null);
+    const [cookieChoice, setCookieChoice] = useState<string | null>(null);
 
-  useEffect(() => {
-    const storedChoice = localStorage.getItem("cookieChoice");
-    setCookieChoice(storedChoice);
-  }, []);
+    useEffect(() => {
+        const storedChoice = localStorage.getItem("cookieChoice");
+        setCookieChoice(storedChoice);
+    }, []);
 
-  const handleCookieChoice = (choice: string) => {
-    localStorage.setItem("cookieChoice", choice);
-    setCookieChoice(choice);
-  };
+    const handleCookieChoice = (choice: string) => {
+        localStorage.setItem("cookieChoice", choice);
+        setCookieChoice(choice);
+    };
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen flex flex-col bg-dark bg-pattern bandana-overlay font-body text-light">
-        <Header />
-        <main className="flex-grow flex flex-col">
-          <Router />
-        </main>
-        <Footer />
-        {!cookieChoice && (
-          <CookieConsent 
-            onAccept={() => handleCookieChoice("accepted")} 
-            onDecline={() => handleCookieChoice("declined")} 
-          />
-        )}
-      </div>
-      <Toaster />
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            {/* FIXED SITE-WIDE BACKGROUND (stays put while content scrolls) */}
+            <div className="fixed inset-0 -z-10 bg-dark bg-pattern bandana-overlay bg-cover bg-center" />
+
+            {/* SCROLLING CONTENT */}
+            <div className="min-h-screen flex flex-col font-body text-light">
+                <Header />
+                <main className="flex-grow flex flex-col">
+                    <Router />
+                </main>
+                <Footer />
+                {!cookieChoice && (
+                    <CookieConsent
+                        onAccept={() => handleCookieChoice("accepted")}
+                        onDecline={() => handleCookieChoice("declined")}
+                    />
+                )}
+            </div>
+
+            <Toaster />
+        </QueryClientProvider>
+    );
 }
 
 export default App;

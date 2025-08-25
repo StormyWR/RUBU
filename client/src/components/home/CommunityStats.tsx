@@ -1,10 +1,16 @@
 import { motion } from "framer-motion";
-import { Users, Server, HeadsetIcon, Heart } from "lucide-react";
+import {
+  Users,
+  Server,
+  HeadsetIcon,
+  Clock3
+} from "lucide-react";
+import {GrAmazon} from "react-icons/gr";
 
 const stats = [
   { 
     value: "10K+", 
-    label: "MONTHLY PLAYERS", 
+    label: "MONTHLY PLAYERS",
     icon: <Users className="h-10 w-10 text-primary/80" />,
     description: "Unique players across all servers each month"
   },
@@ -21,9 +27,9 @@ const stats = [
     description: "Continuous monitoring and player assistance"
   },
   { 
-    value: "99.9%", 
-    label: "UPTIME GUARANTEE", 
-    icon: <Heart className="h-10 w-10 text-primary/80" />,
+    value: "95%",
+    label: "UPTIME SLA",
+    icon: <Clock3 className="h-10 w-10 text-primary/80" />,
     description: "Enterprise-grade reliability and performance"
   }
 ];

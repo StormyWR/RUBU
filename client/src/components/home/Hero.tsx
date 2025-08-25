@@ -34,7 +34,7 @@
                   Join the Burrow <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <a href="https://discord.gg/QNvhAcdxj2" target="_blank" rel="noopener noreferrer">
+              <a href="https://discord.gg/5uV8xFa6KR" target="_blank" rel="noopener noreferrer">
                 <Button
                   variant="outline"
                   size="lg"
@@ -77,7 +77,7 @@
             <div className="absolute top-0 right-0 h-2 w-full bandana-diagonal"></div>
 
             <div className="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 z-10">
-              <ShieldCheck className="h-7 w-7 text-primary" />
+              <ShieldCheck className="h-7 w-7 text-white" />
             </div>
             <div className="z-10">
               <h3 className="font-heading text-xl font-bold text-primary mb-2">ANTI-CHEAT PROTECTED</h3>
@@ -91,7 +91,7 @@
             <div className="absolute top-0 right-0 h-2 w-full bandana-diagonal"></div>
 
             <div className="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 z-10">
-              <Calendar className="h-7 w-7 text-primary" />
+              <Calendar className="h-7 w-7 text-white" />
             </div>
             <div className="z-10">
               <h3 className="font-heading text-xl font-bold text-primary mb-2">WEEKLY WIPES</h3>
@@ -105,7 +105,7 @@
             <div className="absolute top-0 right-0 h-2 w-full bandana-diagonal"></div>
 
             <div className="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 z-10">
-              <Users className="h-7 w-7 text-primary" />
+              <Users className="h-7 w-7 text-white" />
             </div>
             <div className="z-10">
               <h3 className="font-heading text-xl font-bold text-primary mb-2">ACTIVE COMMUNITY</h3>
