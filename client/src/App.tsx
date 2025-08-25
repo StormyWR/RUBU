@@ -41,16 +41,20 @@ function App() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            {/* FIXED SITE-WIDE BACKGROUND (stays put while content scrolls) */}
-            <div className="fixed inset-0 -z-10 bg-dark bg-pattern bandana-overlay bg-cover bg-center" />
-
-            {/* SCROLLING CONTENT */}
             <div className="min-h-screen flex flex-col font-body text-light">
                 <Header />
-                <main className="flex-grow flex flex-col">
-                    <Router />
+
+                {/* Centered page panel, wider */}
+                <main className="flex-grow mx-auto w-full max-w-[96rem] px-4 md:px-6 lg:px-8">
+                    <div className="bg-[#003A3A]">
+                        <div className="flex flex-col">
+                            <Router />
+                        </div>
+                    </div>
                 </main>
+
                 <Footer />
+
                 {!cookieChoice && (
                     <CookieConsent
                         onAccept={() => handleCookieChoice("accepted")}
