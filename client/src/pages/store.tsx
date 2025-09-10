@@ -1,109 +1,78 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import StoreItem from "@/components/store/StoreItem";
-import VipTiers from "@/components/store/VipTiers";
-import StoreCategories from "@/components/store/StoreCategories";
-import { StoreItem as StoreItemType } from "@/lib/types";
-import { useToast } from "@/hooks/use-toast";
-import { AlertTriangle } from "lucide-react";
+import { useState } from "react";
+import pagePlate from "@assets/page_plate.png";
 
 export default function Store() {
-  const { toast } = useToast();
-  const [activeCategory, setActiveCategory] = useState<string>("kits");
-  
-  const { data: storeItems, isLoading, error } = useQuery<StoreItemType[]>({
-    queryKey: ['/api/store-items', activeCategory],
-  });
-  
-  const { data: vipItems } = useQuery<StoreItemType[]>({
-    queryKey: ['/api/store-items', 'vip'],
-  });
-  
-  const categories = ["kits", "vip", "bundles", "donations"];
-  
-  const handleCategoryChange = (category: string) => {
-    setActiveCategory(category);
-  };
-  
-  const handleAddToCart = (item: StoreItemType) => {
-    toast({
-      title: "Added to cart",
-      description: `${item.name} has been added to your cart`,
-    });
-  };
-  
-  const handleSelectVip = (item: StoreItemType) => {
-    toast({
-      title: "VIP Package Selected",
-      description: `${item.name} has been added to your cart`,
-    });
-  };
-  
-  if (isLoading) {
+    const [titleDone, setTitleDone] = useState(false);
+
     return (
-      <div className="py-12 md:py-20 container mx-auto px-4 flex justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
+        <motion.section
+            className="min-h-screen w-full bg-dark/50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+        >
+            {/* Touches header */}
+            <div className="container mx-auto px-4 pb-12 md:pb-20">
+                <div className="relative flex items-start">
+                    {/* Plate + centered title */}
+                    <motion.div
+                        className="relative inline-block z-10"
+                        initial={{ y: -48, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                        onAnimationComplete={() => setTitleDone(true)}
+                    >
+                        <img src={pagePlate} alt="" className="w-80 h-auto" />
+                        <h1 className="absolute inset-0 flex items-center justify-center text-6xl font-bold text-primary">
+                            Store
+                        </h1>
+                    </motion.div>
+
+                    {/* Tabs mount only after title anim finishes */}
+                    {titleDone && <Tabs />}
+                </div>
+            </div>
+        </motion.section>
     );
-  }
-  
-  if (error || !storeItems) {
+}
+
+/** Tabs to the right of the plate/title */
+function Tabs() {
+    const TABS = ["Overview", "Kits", "VIP", "Donations"] as const;
+    type TabKey = typeof TABS[number];
+    const [tab, setTab] = useState<TabKey>("Overview");
+
     return (
-      <div className="py-12 md:py-20 container mx-auto px-4">
-        <div className="bg-dark p-6 rounded-xl flex items-center justify-center space-x-3">
-          <AlertTriangle className="text-secondary h-6 w-6" />
-          <p className="text-light-dark">Failed to load store items. Please try again later.</p>
-        </div>
-      </div>
+        <section className="ml-1">
+            {/* Start a bit to the right, then slide into place */}
+            <motion.div
+                className="relative self-start z-0"
+                initial={{ x: -69, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 520, damping: 34 }}
+            >
+                <div className="inline-flex border border-border bg-dark/80 rounded-none">
+                    {TABS.map((t) => {
+                        const isActive = tab === t;
+                        return (
+                            <button
+                                key={t}
+                                onClick={() => setTab(t)}
+                                className={[
+                                    "px-4 py-2 text-sm font-medium select-none transition-colors",
+                                    "rounded-none focus:outline-none",
+                                    isActive
+                                        ? "bg-primary text-white"
+                                        : "text-light-dark hover:bg-dark/90"
+                                ].join(" ")}
+                            >
+                                {t}
+                            </button>
+                        );
+                    })}
+                </div>
+            </motion.div>
+        </section>
     );
-  }
-  
-  return (
-    <motion.section 
-      className="py-12 md:py-20 bg-dark/50"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="container mx-auto px-4">
-        <h2 className="font-heading text-4xl md:text-5xl text-primary text-center mb-12">Store</h2>
-        
-        {/* Categories tabs */}
-        <StoreCategories 
-          categories={categories}
-          activeCategory={activeCategory}
-          onChange={handleCategoryChange}
-        />
-        
-        {/* Store items grid */}
-        {activeCategory === "kits" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {storeItems.map((item) => (
-              <StoreItem 
-                key={item.id} 
-                item={item} 
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        )}
-        
-        {/* VIP benefits */}
-        {activeCategory === "vip" && vipItems && (
-          <VipTiers vipItems={vipItems} onSelect={handleSelectVip} />
-        )}
-        
-        {/* Empty placeholder for other categories */}
-        {(activeCategory === "bundles" || activeCategory === "donations") && (
-          <div className="bg-dark p-8 rounded-xl text-center">
-            <h3 className="font-heading text-2xl text-primary mb-4">Coming Soon!</h3>
-            <p className="text-light-dark">
-              We're working on bringing you amazing {activeCategory}. Check back soon!
-            </p>
-          </div>
-        )}
-      </div>
-    </motion.section>
-  );
 }
