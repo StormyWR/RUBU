@@ -1,19 +1,19 @@
-// components/store/lifetime_kits.tsx
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "framer-motion";
+import { AnimatePresence, motion, useInView, useMotionValue, useSpring } from "framer-motion";
 import imgVIP1 from "@assets/cloth_VIP1.png";
 import imgVIP2 from "@assets/wood_VIP2.png";
 import imgVIP3 from "@assets/stone_VIP3.png";
 import imgVIP4 from "@assets/metal.f_VIP4.png";
 import imgVIP5 from "@assets/hqm_VIP5.png";
+import {HelpCircle} from "lucide-react";
 
 const DROPDOWN_OPTIONS = ["RustBunnies | 2X | Weekly/Thursdays"];
 
 const CURRENCY_OPTIONS = [
     { code: "USD", symbol: "$", rate: 1 },
     { code: "EUR", symbol: "€", rate: 0.92 },
-    { code: "GBP", symbol: "£", rate: 0.8 },
-    { code: "AUD", symbol: "A$", rate: 1.5 },
+    { code: "GBP", symbol: "£", rate: 0.80 },
+    { code: "AUD", symbol: "A$", rate: 1.50 },
     { code: "CAD", symbol: "C$", rate: 1.35 },
 ];
 
@@ -57,11 +57,11 @@ const KIT_FILES: Record<string, { kit: string; armor: string }> = {
 };
 
 const LIFETIME_ITEMS: ProductItem[] = [
-    { id: "vip-1", image: imgVIP1, name: "Twig", subtitle: "Small Stash", price: "$19.99", desc: "Early-game essentials—bags, tools, and basic mats—to claim space and craft a secure starter." },
-    { id: "vip-2", image: imgVIP2, name: "Wood", subtitle: "Small Box", price: "$39.99", desc: "Sustainable growth pack with extra mats and upkeep to expand, roam, and keep furnaces running." },
-    { id: "vip-3", image: imgVIP3, name: "Stone", subtitle: "Large Box", price: "$59.99", desc: "Mid-game stability: stone and deployables to thicken walls, improve upkeep, and hold territory longer." },
-    { id: "vip-4", image: imgVIP4, name: "Metal", subtitle: "Coffin", price: "$79.99", desc: "Advanced progression—metal build supplies and key components to harden your base and push monuments." },
-    { id: "vip-5", image: imgVIP5, name: "HQM", subtitle: "Supply Drop", price: "$99.99", desc: "End-game cache: high-quality metal and parts for clan builds, raids, and steady late-wipe pressure." },
+    { id: "vip-1", image: imgVIP1, name: "Twig", subtitle: "Small Stash", price: "$59.99", desc: "Just getting started? This one’s the bare-bones jumpstart. Enough to throw down a base, craft your first tools, and stop living in the wild like an animal."},
+    { id: "vip-2", image: imgVIP2, name: "Wood", subtitle: "Small Box", price: "$69.99", desc: "Bump it up a notch. More wood than you can carry without a sore back, perfect for building a proper home and still having leftovers for campfires and doors."},
+    { id: "vip-3", image: imgVIP3, name: "Stone", subtitle: "Large Box", price: "$79.99", desc: "Time to stop worrying about grubs breaking in with a salvaged cleaver. Plenty of stone to lock your place down, plus enough to stash for upgrades later.\n" },
+    { id: "vip-4", image: imgVIP4, name: "Metal", subtitle: "Coffin", price: "$89.99", desc: "Step into the big leagues. Metal for serious defenses and proper gear so you can finally stop hiding every time you hear footsteps." },
+    { id: "vip-5", image: imgVIP5, name: "HQM", subtitle: "Supply Drop", price: "$99.99", desc: "King of the hill. High Quality Metal to max out your base, your weapons, and your flashlights. You’ll be rolling in big dog gear before people have their externals down.\n" },
 ];
 
 export default function LifetimeKits() {
@@ -71,7 +71,7 @@ export default function LifetimeKits() {
     const [menuOpt, setMenuOpt] = useState("");
     const [currency, setCurrency] = useState(CURRENCY_OPTIONS[0]);
     const gridRef = useRef<HTMLDivElement | null>(null);
-    const inView = useInView(gridRef, { amount: 0.2, once: true });
+    const inView = useInView(gridRef, {amount: 0.2, once: true});
 
     useEffect(() => {
         const t = setTimeout(() => setStartAnim(true), 2000);
@@ -159,8 +159,11 @@ export default function LifetimeKits() {
                     </div>
 
                     <div className="mt-1 px-1 text-[10px] leading-relaxed text-light/80">
-                        <span className="font-semibold">Claiming Your Kit:</span> Link your account, buy your desired kit, hop on the server, and type <span className="font-mono">/kit</span> to grab it. If you’re online when you buy, you might need to reload. If you’re offline, it’ll be waiting next time you log in.
-                        <br />
+                        <span className="font-semibold">Claiming Your Kit:</span> Link your account, buy your desired
+                        kit, hop on the server, and type <span className="font-mono">/kit</span> to grab it. If you’re
+                        online when you buy, you might need to reload. If you’re offline, it’ll be waiting next time you
+                        log in.
+                        <br/>
                         Didn’t get it? No problem — Make a ticket in our <a
                         href="https://discord.gg/5uV8xFa6KR"
                         target="_blank"
@@ -171,7 +174,7 @@ export default function LifetimeKits() {
                 </div>
             </div>
 
-            <div className="h-1 rounded bg-dark w-full mb-6 p-.75" />
+            <div className="h-1 rounded bg-dark w-full mb-6 p-.75"/>
 
             <div ref={gridRef} className="grid grid-cols-5 gap-4">
                 {LIFETIME_ITEMS.map((item, idx) => (
@@ -216,17 +219,19 @@ function ProductCard({
 
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 1.12 }}
-            animate={start ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 2 }}
-            transition={{ duration: 0.3, ease: "easeOut", delay }}
+            initial={{opacity: 0, scale: 1.12}}
+            animate={start ? {opacity: 1, scale: 1} : {opacity: 0, scale: 2}}
+            transition={{duration: 0.3, ease: "easeOut", delay}}
             className="w-full"
         >
-            <div className="bg-dark/80 border border-border rounded-2xl overflow-hidden aspect-[6.5/10] w-full p-3 pb-20 relative flex justify-center items-start">
-                <img src={item.image} alt={item.name} className="object-contain max-w-full max-h-full" />
+            <div
+                className="bg-dark/80 border border-border rounded-2xl overflow-hidden aspect-[6.5/10] w-full p-3 pb-20 relative flex justify-center items-start">
+                <img src={item.image} alt={item.name} className="object-contain max-w-full max-h-full"/>
 
                 <div className="absolute inset-x-0 bottom-14 z-10 px-3 text-center">
                     <div className="text-sm font-heading font-bold text-light leading-tight">
-                        {item.name} <span className="font-technical uppercase tracking-[0.08em] text-light/80">- {item.subtitle}</span>
+                        {item.name} <span
+                        className="font-technical uppercase tracking-[0.08em] text-light/80">- {item.subtitle}</span>
                     </div>
                     <div className="text-xs font-technical tabular-nums mt-0.5">
                         <span className="text-red-500 font-medium">{priceFmt(item.price)}</span>{" "}
@@ -253,6 +258,7 @@ function ProductCard({
     );
 }
 
+// Note: ensure your framer-motion import includes useMotionValue and useSpring.
 function KitViewModal({
                           open,
                           item,
@@ -267,6 +273,9 @@ function KitViewModal({
     priceFmt?: (usdText: string) => string;
 }) {
     const files = item ? KIT_FILES[item.id] : null;
+    const [cmdHover, setCmdHover] = useState(false);
+    const mvX = useMotionValue(0);
+    const cmdX = useSpring(mvX, { stiffness: 420, damping: 32, mass: 0.7 });
 
     return (
         <AnimatePresence>
@@ -300,20 +309,91 @@ function KitViewModal({
                     >
                         <div className="relative">
                             <div className="grid grid-cols-3 gap-0 items-stretch">
+                                {/* Left panel */}
                                 <div className="col-span-1 -my-5 relative bg-dark rounded-l-2xl rounded-r-none border border-border border-r-0 p-7 flex flex-col overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.35)] z-20">
                                     <div className="w-30 h-30 rounded-lg border border-border bg-black/40 grid place-items-center overflow-hidden mb-4">
                                         <img src={item.image} alt="" className="object-contain w-full h-full" />
                                     </div>
+
                                     <div className="text-xl font-heading font-bold text-light leading-tight">
-                                        {item.name} <span className="font-technical uppercase tracking-[0.08em] text-light/80">- {item.subtitle}</span>
+                                        {item.name}{" "}
+                                        <span className="font-technical uppercase tracking-[0.08em] text-light/80">
+                      - {item.subtitle}
+                    </span>
                                     </div>
+
                                     <div className="text-sm font-technical tabular-nums mt-1">
-                                        <span className="text-red-500 font-bold">{item.price}</span> <span className="text-light/70">/ Lifetime</span>
+                    <span className="text-red-500 font-bold">
+                      {priceFmt ? priceFmt(item.price) : item.price}
+                    </span>{" "}
+                                        <span className="text-light/70">/ Lifetime</span>
                                     </div>
-                                    <div className="mt-4 text-sm text-light/85 leading-relaxed">{item.desc}</div>
-                                    <button onClick={onAdd} className="mt-auto h-10 w-full rounded-md bg-primary text-white font-bold hover:bg-primary/90">
+
+                                    <div className="mt-3 text-[11px] leading-relaxed text-light/80 flex-1">
+                                        {item.desc}
+                                    </div>
+
+                                    {/* Commands trigger (hover only over the words+icon) */}
+                                    <div className="relative -translate-y-[8px] flex w-full items-center justify-center">
+                                        <div
+                                            className="relative inline-flex items-center gap-1 px-1 py-0.5 text-[9px] leading-relaxed text-light/60 hover:text-light select-none cursor-default"
+                                            onMouseEnter={() => setCmdHover(true)}
+                                            onMouseLeave={() => {
+                                                setCmdHover(false);
+                                                mvX.set(0);
+                                            }}
+                                            onMouseMove={(e) => {
+                                                const r = e.currentTarget.getBoundingClientRect();
+                                                const rel = (e.clientX - r.left) / r.width; // 0..1 within trigger
+                                                const halfRange = Math.min(60, r.width / 2 - 2); // clamp slide
+                                                const dx = (rel - 0.5) * (halfRange * 2);
+                                                mvX.set(dx);
+                                            }}
+                                        >
+                                            <HelpCircle className="h-3 w-3" />
+                                            <span className="font-medium">Kit Perks</span>
+
+                                            <AnimatePresence>
+                                                {cmdHover && (
+                                                    <div className="pointer-events-none absolute left-1/2 bottom-[calc(100%+6px)] -translate-x-1/2 z-[999]">
+                                                        <motion.div
+                                                            key="cmd-hover"
+                                                            style={{ x: cmdX, willChange: "transform" }}
+                                                            initial={{ opacity: 0, scale: 0.1 }}
+                                                            animate={{ opacity: 1, scale: 1 }}
+                                                            exit={{ opacity: 0, scale: 0.1 }}
+                                                            transition={{ type: "spring", stiffness: 420, damping: 26 }}
+                                                            className="w-[220px] rounded-xl border border-white/10 bg-black/90 shadow-[0_8px_30px_rgba(0,0,0,0.45)] overflow-hidden"
+                                                            role="tooltip"
+                                                        >
+                                                            <div className="relative p-3">
+                                                                <div
+                                                                    aria-hidden
+                                                                    className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,bg-dark,transparent_88%)] bg-[repeating-linear-gradient(180deg,rgba(255,255,255,0.05)_0px,rgba(255,255,255,0.05)_1px,transparent_2px,transparent_4px)]"
+                                                                />
+                                                                <ul className="relative list-disc pl-4 space-y-1.5 text-[10px] text-light/90">
+                                                                    <li>Automatically upgrade your builds - /bgrade</li>
+                                                                    <li>Reskin any item, to have any skin in the game - /skinbox</li>
+                                                                    <li>Put an image onto any sized sign - /sil</li>
+                                                                    <li>Skip Queue every wipe</li>
+                                                                    <li>Colored Name in chat</li>
+                                                                </ul>
+                                                            </div>
+                                                        </motion.div>
+                                                    </div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={onAdd}
+                                        className="mt-auto h-10 w-full rounded-md bg-primary text-white font-bold hover:bg-primary/90"
+                                    >
                                         Add to Cart
                                     </button>
+
+                                    {/* panel overlays */}
                                     <div
                                         aria-hidden
                                         className="pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_88%)] bg-[repeating-linear-gradient(180deg,rgba(255,255,255,0.05)_0px,rgba(255,255,255,0.05)_1px,transparent_2px,transparent_4px)]"
@@ -324,6 +404,7 @@ function KitViewModal({
                                     />
                                 </div>
 
+                                {/* Right panel */}
                                 <motion.div
                                     key="kv-right"
                                     initial={{ x: -420, opacity: 0 }}
@@ -354,7 +435,7 @@ function KitViewModal({
                                         <button
                                             onClick={onClose}
                                             aria-label="Close"
-                                            className="absolute top-3 left-1/2 -translate-x-1/2 h-8 w-8 rounded-md bg-dark/90 border border-border text-light hover:bg-dark shadow-md"
+                                            className="absolute top-3 left-1/2 -translate-x-1/2 h-8 w-8 rounded-md bg-black/40 border border-border text-light hover:bg-black/20 shadow-md"
                                         >
                                             ×
                                         </button>
@@ -376,3 +457,5 @@ function KitViewModal({
         </AnimatePresence>
     );
 }
+
+
