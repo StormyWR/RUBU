@@ -42,8 +42,6 @@ const AuthSection = () => {
             <AvatarImage src={user.avatarUrl} alt={user.displayName}/>
             <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
           </Avatar>
-
-          {/* Logout overlay */}
           <div
               className="absolute inset-0 bg-black/70 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <span className="text-white text-xs font-bold text-center">LOG OUT</span>
@@ -82,15 +80,13 @@ export default function Header() {
   ];
   
   useEffect(() => {
-    // Close the mobile menu when changing routes
     setSheetOpen(false);
   }, [currentPath]);
   
   return (
-    <header className="sticky top-0 z-50 bg-dark/95 backdrop-blur-sm shadow-lg border-b border-teal-700/20">
+    <header className="sticky top-0 z-50 bg-dark shadow-lg border-b border-teal-700/20">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Left side - Auth and Navigation */}
           <div className="flex items-center space-x-6">
             <AuthSection />
             {!isMobile && (
@@ -108,15 +104,11 @@ export default function Header() {
               </nav>
             )}
           </div>
-          
-          {/* Right side - Logo */}
           <Link href="/">
             <div className="flex items-center cursor-pointer group">
               <HeaderLogo className="h-14 md:h-16 transition-transform group-hover:scale-105" />
             </div>
           </Link>
-          
-          {/* Mobile menu */}
           {isMobile && (
             <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
               <SheetTrigger asChild>

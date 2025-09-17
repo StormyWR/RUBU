@@ -75,3 +75,21 @@
   .btn-outline { @apply bg-transparent border border-primary border-opacity-30 text-light font-medium transition-all; }
   .btn-outline:hover { @apply border-opacity-60; }
 }
+
+#store-menu,
+#currency-menu {
+  color: #e6e6e6;
+  background-color: #002626;
+}
+
+#store-menu option,
+#currency-menu option {
+  background-color: #002626;
+  color: #e6e6e6;
+}
+
+#store-menu:focus,
+#currency-menu:focus {
+  outline: 0;
+  box-shadow: 0 0 0 1px rgba(0, 182, 182, 0.6);
+}
